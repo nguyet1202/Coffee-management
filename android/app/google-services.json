@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "894979388834",
+    "project_id": "coffeemanagement-36c89",
+    "storage_bucket": "coffeemanagement-36c89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894979388834:android:7ff9e60f2a926318ea2efb",
+        "android_client_info": {
+          "package_name": "com.coffeemanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894979388834-v4rdkm61lb2p01891ik7dvopehv0e2b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY1JvDM8iQagYZY4LO48SEKmeaLIdaJ8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894979388834-v4rdkm61lb2p01891ik7dvopehv0e2b9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
