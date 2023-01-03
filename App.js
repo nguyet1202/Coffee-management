@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React from 'react';
 import type {Node} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,6 +18,7 @@ import {
   View,
 } from 'react-native';
 
+import {Icon} from 'react-native-vector-icons/Entypo';
 import {
   Colors,
   DebugInstructions,
@@ -25,7 +26,6 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {Icon} from 'react-native-vector-icons/Entypo';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
