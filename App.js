@@ -25,6 +25,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {Icon} from 'react-native-vector-icons/Entypo';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -32,6 +33,7 @@ const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
+      <Icon name="aircraft" size={30} color="black" />
       <Text
         style={[
           styles.sectionTitle,
