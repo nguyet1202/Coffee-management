@@ -18,7 +18,7 @@ import {
   View,
 } from 'react-native';
 
-import {Icon} from 'react-native-vector-icons/Entypo';
+// import {Icon} from 'react-native-vector-icons/Entypo';
 import {
   Colors,
   DebugInstructions,
@@ -33,7 +33,7 @@ const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
-      <Icon name="aircraft" size={30} color="black" />
+      {/* <Icon name="aircraft" size={30} color="black" /> */}
       <Text
         style={[
           styles.sectionTitle,
