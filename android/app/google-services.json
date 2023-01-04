@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:894979388834:android:7ff9e60f2a926318ea2efb",
+        "mobilesdk_app_id": "1:894979388834:android:a1b575e751691e59ea2efb",
         "android_client_info": {
           "package_name": "com.coffeemanagement"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "894979388834-dgtfpppkikb1de5lnk3o0m9puk11vqn4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coffeemanagement",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
         {
           "client_id": "894979388834-v4rdkm61lb2p01891ik7dvopehv0e2b9.apps.googleusercontent.com",
           "client_type": 3
