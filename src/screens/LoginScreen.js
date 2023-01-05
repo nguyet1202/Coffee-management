@@ -1,4 +1,5 @@
-import React from 'react';
+import auth from '@react-native-firebase/auth';
+import React, {useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -7,30 +8,69 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+const LoginScreen = ({navigation}) => {
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  }
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-const LoginScreen = () => {
+  const handleLogin = () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        navigation.navigate('Home');
+        console.log('loginnnnnn');
+      })
+      .catch(err => console.log(err.message));
+  };
+  if (initializing) return null;
+  if (!user) {
+    return (
+      <KeyboardAvoidingView>
+        <View style={styles.container}>
+          <Text style={styles.title}>Login</Text>
+          <View style={styles.containInput}>
+            <Text style={styles.text}>Email</Text>
+            <TextInput
+              placeholder="Enter your email"
+              value={email}
+              onChangeText={text => setEmail(text)}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.containInput}>
+            <Text style={styles.text}>Password</Text>
+            <TextInput
+              placeholder="Enter your password"
+              value={password}
+              onChangeText={text => setPassword(text)}
+              secureTextEntry
+              style={styles.input}
+            />
+          </View>
+          <TouchableOpacity style={styles.btn} onPress={handleLogin}>
+            <Text style={styles.btnText}>Login</Text>
+          </TouchableOpacity>
+          <Text style={styles.forgot}>Forgot your password?</Text>
+        </View>
+      </KeyboardAvoidingView>
+    );
+  }
   return (
-    <KeyboardAvoidingView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
-        <View style={styles.containInput}>
-          <Text style={styles.text}>Email</Text>
-          <TextInput placeholder="Enter your email" style={styles.input} />
-        </View>
-        <View style={styles.containInput}>
-          <Text style={styles.text}>Password</Text>
-          <TextInput
-            placeholder="Enter your password"
-            secureTextEntry
-            style={styles.input}
-          />
-        </View>
-        <TouchableOpacity style={styles.btn}>
-          <Text style={styles.btnText}>Login</Text>
-        </TouchableOpacity>
-        <Text style={styles.forgot}>Forgot your password?</Text>
-      </View>
-    </KeyboardAvoidingView>
+    <View>
+      <Text>Welcome {user.email}</Text>
+    </View>
   );
 };
 
