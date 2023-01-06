@@ -16,7 +16,7 @@ import firestore from '@react-native-firebase/firestore';
 const App = () => {
   // const collection = firestore().collection('products');
   const collection = firestore().collection('products');
-  const pageSize = 5;
+  const pageSize = 6;
   const page = 2;
   const {data, loading, error, refresh} = useFirestoreCollection(
     collection,
