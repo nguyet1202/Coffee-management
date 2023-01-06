@@ -76,10 +76,6 @@ function useFirestoreCollection(collection, pageSize, page) {
         },
       );
     } else {
-<<<<<<< HEAD
-=======
-      // setLoading(true);
->>>>>>> ad515d1e7f10b0311bd8166cf9bdcd2b01f81311
       collection
         .limit(pageSize)
         // .offset(page * pageSize)

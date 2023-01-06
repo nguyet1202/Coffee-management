@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 10,
-    gap:10,
+    gap: 10,
   },
   ingre: {
     width: 170,
