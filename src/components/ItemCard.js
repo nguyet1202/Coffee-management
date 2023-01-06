@@ -1,12 +1,19 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+} from 'react-native';
 
 const ItemCard = ({item}) => {
   return (
     <View style={styles.wraper}>
       <View style={styles.container}>
         <View style={styles.leftContent}>
-        <Image style={styles.img} source={{uri: item.img}} />
+          <Image style={styles.img} source={{uri: item.img}} />
           <View style={styles.btnGroup}>
             <TouchableOpacity style={styles.btnUpdate}>
               <Text style={styles.txtUpdate}>UPDATE</Text>
@@ -24,9 +31,7 @@ const ItemCard = ({item}) => {
             <Text style={styles.price}>{item.categoryId}</Text>
           </View>
           <Text style={styles.title}>Ingredient</Text>
-          <Text style={styles.ingre}>
-          {item.ingredients}
-          </Text>
+          <Text style={styles.ingre}>{item.ingredients}</Text>
         </View>
       </View>
     </View>
@@ -39,7 +44,7 @@ const styles = StyleSheet.create({
   wraper: {
     display: 'flex',
     alignItems: 'center',
-    paddingBottom:20,
+    paddingBottom: 20,
   },
   container: {
     width: '90%',
@@ -49,7 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#A77E52',
     borderRadius: 5,
-    padding:7,
+    padding: 7,
   },
   leftContent: {
     display: 'flex',
@@ -60,8 +65,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    paddingLeft:20,
-
+    paddingLeft: 20,
   },
   img: {
     width: 146,
@@ -120,4 +124,3 @@ const styles = StyleSheet.create({
     padding: 5,
   },
 });
-

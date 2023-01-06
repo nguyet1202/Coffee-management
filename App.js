@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import useFirestoreCollection from './src/hooks/useFirestoreCollection';
@@ -31,6 +32,29 @@ const App = () => {
   if (error) {
     return <Text>Error: {error.message}</Text>;
   }
+  const renderHeader = () => {
+    return (
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          <Text style={{color: 'black', fontSize: 25}}>Friends</Text>
+          <Image
+            style={styles.iconSearch}
+            source={{
+              uri: 'https://cdn-icons-png.flaticon.com/512/54/54481.png',
+            }}
+          />
+        </View>
+        <View style={styles.viewBotton}>
+          <TouchableOpacity style={styles.headerButton}>
+            <Text style={{color: 'black', fontSize: 15}}>suggestion</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.headerButton}>
+            <Text style={{color: 'black', fontSize: 15}}>Your Friends</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
   const renderEmpty = () => {
     return (
       <View style={styles.emptyContainer}>
