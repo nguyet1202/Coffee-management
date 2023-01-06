@@ -1,7 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
+<<<<<<< HEAD
 
+=======
+// import React from 'react';
+>>>>>>> ad515d1e7f10b0311bd8166cf9bdcd2b01f81311
 function useFirestoreCollection(collection, pageSize, page) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -77,6 +81,10 @@ function useFirestoreCollection(collection, pageSize, page) {
         },
       );
     } else {
+<<<<<<< HEAD
+=======
+      // setLoading(true);
+>>>>>>> ad515d1e7f10b0311bd8166cf9bdcd2b01f81311
       collection
         .limit(pageSize)
         // .offset(page * pageSize)
