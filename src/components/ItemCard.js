@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
   wraper: {
     display: 'flex',
     alignItems: 'center',
-    paddingBottom: 20,
+    paddingBottom: 10,
+    paddingTop: 20,
   },
   container: {
     width: '90%',
@@ -54,7 +55,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#A77E52',
     borderRadius: 5,
-    padding: 7,
   },
   leftContent: {
     display: 'flex',
@@ -68,14 +68,16 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   img: {
-    width: 146,
+    width: 140,
     height: 108,
+    borderRadius: 20,
   },
   btnGroup: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 10,
+    gap:10,
   },
   ingre: {
     width: 170,

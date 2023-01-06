@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-// import React from 'react';
+
 function useFirestoreCollection(collection, pageSize, page) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +32,6 @@ function useFirestoreCollection(collection, pageSize, page) {
         },
       );
     } else {
-      // setLoading(true);
       unsubscribe = collection
         .limit(pageSize)
         // .offset(page * pageSize)
@@ -78,7 +77,6 @@ function useFirestoreCollection(collection, pageSize, page) {
         },
       );
     } else {
-      // setLoading(true);
       collection
         .limit(pageSize)
         // .offset(page * pageSize)
