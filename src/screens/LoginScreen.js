@@ -24,7 +24,19 @@ const LoginScreen = ({navigation}) => {
     return subscriber; // unsubscribe on unmount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  const resetPassword = () => {
+    console.log(email);
+    if (email !== '') {
+      auth()
+        .sendPasswordResetEmail(email)
+        .then(() => {
+          alert('Check your email to reset password');
+        })
+        .catch(err => console.log(err.message));
+    } else {
+      alert('Please enter a valid email');
+    }
+  };
   const handleLogin = () => {
     auth()
       .signInWithEmailAndPassword(email, password)
@@ -62,7 +74,9 @@ const LoginScreen = ({navigation}) => {
           <TouchableOpacity style={styles.btn} onPress={handleLogin}>
             <Text style={styles.btnText}>Login</Text>
           </TouchableOpacity>
-          <Text style={styles.forgot}>Forgot your password?</Text>
+          <TouchableOpacity onPress={resetPassword}>
+            <Text style={styles.forgot}>Forgot your password?</Text>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     );
