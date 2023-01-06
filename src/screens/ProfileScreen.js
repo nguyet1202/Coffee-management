@@ -6,7 +6,7 @@ const ProfileScreen = ({navigation}) => {
     auth()
       .signOut()
       .then(() => {
-        navigation.navigate('Home');
+        navigation.navigate('Login');
       });
   };
   return (
@@ -26,15 +26,15 @@ const ProfileScreen = ({navigation}) => {
             source={require('../assets/img/email.png')}
             style={styles.imgIcon}
           />
-          <Text style={styles.infoText}>bacogaiver3@gmail.com</Text>
+          <Text style={styles.infoText}>nguyenthilinh2linh2@gmail.com</Text>
         </View>
 
         <View style={styles.row}>
           <Image
-            source={require('../assets/img/password.png')}
+            source={require('../assets/img/birthday.png')}
             style={styles.imgIcon}
           />
-          <Text style={styles.infoText}>bacogai123</Text>
+          <Text style={styles.infoText}>26/11/2002</Text>
         </View>
 
         <View style={styles.row}>
