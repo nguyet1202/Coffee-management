@@ -1,7 +1,81 @@
 import auth from '@react-native-firebase/auth';
-import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import React, {useEffect} from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import useFirestoreCollection from '../hooks/useFirestoreCollection';
+
 const ProfileScreen = ({navigation}) => {
+  const collection = firestore().collection('users');
+  const pageSize = 1;
+  const page = 1;
+  const {data, loading, error, refresh} = useFirestoreCollection(
+    collection,
+    page,
+    pageSize,
+  );
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  if (error) {
+    return error.message;
+  }
+  const renderItem = ({item}) => {
+    return (
+      <View style={styles.container}>
+        <View style={styles.backgroundProfile} />
+        <Image source={{uri: item.avt}} style={styles.img} />
+        <View style={styles.info}>
+          <View style={styles.row}>
+            <Image
+              source={require('../assets/img/name.png')}
+              style={styles.imgIcon}
+            />
+            <Text style={styles.infoText}>{item.Name}</Text>
+          </View>
+          <View style={styles.row}>
+            <Image
+              source={require('../assets/img/email.png')}
+              style={styles.imgIcon}
+            />
+            <Text style={styles.infoText}>{item.Email}</Text>
+          </View>
+
+          <View style={styles.row}>
+            <Image
+              source={require('../assets/img/birthday.png')}
+              style={styles.imgIcon}
+            />
+            <Text style={styles.infoText}>{item.birthday}</Text>
+          </View>
+
+          <View style={styles.row}>
+            <Image
+              source={require('../assets/img/phone.png')}
+              style={styles.imgIcon}
+            />
+            <Text style={styles.infoText}>{item.phone}</Text>
+          </View>
+        </View>
+        <View style={styles.btnProfile}>
+          <TouchableOpacity style={styles.edit}>
+            <Text style={styles.btnText}>Edit Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.logout} onPress={handleLogout}>
+            <Text style={styles.btnText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
   const handleLogout = () => {
     auth()
       .signOut()
@@ -10,50 +84,19 @@ const ProfileScreen = ({navigation}) => {
       });
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.backgroundProfile} />
-      <Image source={require('../assets/img/avt.png')} style={styles.img} />
-      <View style={styles.info}>
-        <View style={styles.row}>
-          <Image
-            source={require('../assets/img/name.png')}
-            style={styles.imgIcon}
-          />
-          <Text style={styles.infoText}>Ba Thi Co Gai</Text>
-        </View>
-        <View style={styles.row}>
-          <Image
-            source={require('../assets/img/email.png')}
-            style={styles.imgIcon}
-          />
-          <Text style={styles.infoText}>nguyenthilinh2linh2@gmail.com</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Image
-            source={require('../assets/img/birthday.png')}
-            style={styles.imgIcon}
-          />
-          <Text style={styles.infoText}>26/11/2002</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Image
-            source={require('../assets/img/phone.png')}
-            style={styles.imgIcon}
-          />
-          <Text style={styles.infoText}>0376272111</Text>
-        </View>
-      </View>
-      <View style={styles.btnProfile}>
-        <TouchableOpacity style={styles.edit}>
-          <Text style={styles.btnText}>Edit Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.logout} onPress={handleLogout}>
-          <Text style={styles.btnText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <>
+      {loading ? (
+        <ActivityIndicator color={'#FFBF1C'} size="large" />
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          onRefresh={refresh}
+          refreshing={loading}
+        />
+      )}
+    </>
   );
 };
 
