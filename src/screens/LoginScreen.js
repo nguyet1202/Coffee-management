@@ -1,5 +1,6 @@
 import auth from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -37,12 +38,16 @@ const LoginScreen = ({navigation}) => {
       alert('Please enter a valid email');
     }
   };
+  // auth()
+  //   .signOut()
+  //   .then(() => console.log('User signed out!'));
   const handleLogin = () => {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        navigation.navigate('Home');
+        navigation.navigate('Main');
         console.log('loginnnnnn');
+        AsyncStorage.setItem('user', JSON.stringify(user));
       })
       .catch(err => console.log(err.message));
   };
@@ -81,11 +86,6 @@ const LoginScreen = ({navigation}) => {
       </KeyboardAvoidingView>
     );
   }
-  return (
-    <View>
-      <Text>Welcome {user.email}</Text>
-    </View>
-  );
 };
 
 export default LoginScreen;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -6,9 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Modal,
 } from 'react-native';
-
+import ModalAdd from './FormAdd';
 const WarehouseHeader = () => {
+  const [isModalVisible, setisModalVisible] = useState(false);
+  const changeModalVisible = bool => {
+    setisModalVisible(bool);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.search}>
@@ -21,10 +26,19 @@ const WarehouseHeader = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.btnWraper}>
-        <TouchableOpacity style={styles.AddBtn}>
+        <TouchableOpacity
+          style={styles.AddBtn}
+          onPress={() => changeModalVisible(true)}>
           <Text style={styles.txtBtn}>Add new</Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={isModalVisible}
+        nRequestClose={() => changeModalVisible(false)}>
+        <ModalAdd changeModalVisible={changeModalVisible} setData={null} />
+      </Modal>
     </View>
   );
 };

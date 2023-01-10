@@ -7,8 +7,28 @@ import {
   View,
   TextInput,
 } from 'react-native';
-
+import firestore from '@react-native-firebase/firestore';
+import ModalAdd from './FormAdd';
 const ItemCard = ({item}) => {
+  async function deleteItem() {
+    await firestore()
+      .collection('products')
+      .doc(item.id)
+      .delete()
+      .then(() => {
+        alert('Deleted Item Successfully!');
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+  }
+  // const Edit = item => {
+  //   setName(item.Name);
+  //   setEmail(item.Email);
+  //   setBirthday(item.birthday);
+  //   setPhone(item.phone);
+  //   setModalVisible(true);
+  // };
   return (
     <View style={styles.wraper}>
       <View style={styles.container}>
@@ -18,7 +38,9 @@ const ItemCard = ({item}) => {
             <TouchableOpacity style={styles.btnUpdate}>
               <Text style={styles.txtUpdate}>UPDATE</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnDelete}>
+            <TouchableOpacity
+              style={styles.btnDelete}
+              onPress={() => deleteItem()}>
               <Text style={styles.txtDelete}>DELETE</Text>
             </TouchableOpacity>
           </View>

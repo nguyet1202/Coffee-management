@@ -29,6 +29,7 @@ const Homepage = () => {
   if (error) {
     return <Text>Error: {error.message}</Text>;
   }
+
   const renderEmpty = () => {
     return (
       <View style={styles.emptyContainer}>
