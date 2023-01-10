@@ -1,18 +1,27 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Image,
+  Modal,
+  Pressable,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import useFirestoreCollection from '../hooks/useFirestoreCollection';
 
 const ProfileScreen = ({navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [phone, setPhone] = useState('');
   const collection = firestore().collection('users');
   const pageSize = 1;
   const page = 1;
@@ -28,6 +37,32 @@ const ProfileScreen = ({navigation}) => {
   if (error) {
     return error.message;
   }
+  const Edit = item => {
+    setName(item.Name);
+    setEmail(item.Email);
+    setBirthday(item.birthday);
+    setPhone(item.phone);
+    setModalVisible(true);
+  };
+  const btnSave = item => {
+    firestore()
+      .collection('users')
+      .doc(item.id)
+      .update({
+        Name: name,
+        Email: email,
+        birthday: birthday,
+        phone: phone,
+      })
+      .then(() => {
+        navigation.navigate('Profile');
+        alert('Update successfully');
+      })
+      .catch(error => {
+        alert(error.message);
+      });
+    setModalVisible(false);
+  };
   const renderItem = ({item}) => {
     return (
       <View style={styles.container}>
@@ -67,11 +102,61 @@ const ProfileScreen = ({navigation}) => {
         </View>
         <View style={styles.btnProfile}>
           <TouchableOpacity style={styles.edit}>
-            <Text style={styles.btnText}>Edit Profile</Text>
+            <Text
+              style={styles.btnText}
+              onPress={() => {
+                Edit(item);
+              }}>
+              Edit Profile
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.logout} onPress={handleLogout}>
             <Text style={styles.btnText}>Logout</Text>
           </TouchableOpacity>
+        </View>
+        <View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={ModalForm.containModal}>
+              <Text style={ModalForm.title}>Make your profile</Text>
+              <TextInput
+                defaultValue={item.Name}
+                onChangeText={text => setName(text)}
+                style={ModalForm.input}
+              />
+              <TextInput
+                defaultValue={item.Email}
+                onChangeText={text => setEmail(text)}
+                style={ModalForm.input}
+              />
+              <TextInput
+                defaultValue={item.birthday}
+                onChangeText={text => setBirthday(text)}
+                style={ModalForm.input}
+              />
+              <TextInput
+                defaultValue={item.phone}
+                onChangeText={text => setPhone(text)}
+                style={ModalForm.input}
+              />
+              <TouchableOpacity style={ModalForm.btnSave}>
+                <Text style={ModalForm.textSave} onPress={() => btnSave(item)}>
+                  Save
+                </Text>
+              </TouchableOpacity>
+              <Pressable
+                style={ModalForm.btnClose}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={ModalForm.textClose}>Exit</Text>
+              </Pressable>
+            </View>
+          </Modal>
         </View>
       </View>
     );
@@ -169,6 +254,59 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '600',
+    color: 'white',
+  },
+});
+const ModalForm = StyleSheet.create({
+  containModal: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    height: '100%',
+  },
+  title: {
+    fontSize: 24,
+    color: '#FFBF1C',
+    fontWeight: '500',
+    marginBottom: 50,
+  },
+  input: {
+    borderRadius: 10,
+    width: 320,
+    marginBottom: 15,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingLeft: 15,
+  },
+  btnSave: {
+    width: 200,
+    height: 50,
+    borderRadius: 20,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFBF1C',
+    marginTop: 30,
+  },
+  textSave: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: 'white',
+  },
+  btnClose: {
+    width: 200,
+    height: 50,
+    borderRadius: 20,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFBF1C',
+    marginTop: 10,
+  },
+  textClose: {
+    fontSize: 20,
+    fontWeight: '500',
     color: 'white',
   },
 });
