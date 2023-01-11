@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import BottomTabs from '../navigations/BottomTab';
 const LoginScreen = ({navigation}) => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
@@ -81,6 +82,7 @@ const LoginScreen = ({navigation}) => {
       </KeyboardAvoidingView>
     );
   }
+  return <BottomTabs />;
 };
 
 export default LoginScreen;
