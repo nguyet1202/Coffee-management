@@ -22,8 +22,7 @@ const LoginScreen = ({navigation}) => {
   }
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return subscriber;
   }, []);
   const resetPassword = () => {
     console.log(email);

@@ -6,14 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Modal,
 } from 'react-native';
-import ModalAdd from './FormAdd';
+import {useNavigation} from '@react-navigation/native';
+
 const WarehouseHeader = () => {
-  const [isModalVisible, setisModalVisible] = useState(false);
-  const changeModalVisible = bool => {
-    setisModalVisible(bool);
-  };
+  const navigation = useNavigation();
+  const [isStatus, setisStatus] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.search}>
@@ -28,17 +26,10 @@ const WarehouseHeader = () => {
       <View style={styles.btnWraper}>
         <TouchableOpacity
           style={styles.AddBtn}
-          onPress={() => changeModalVisible(true)}>
+          onPress={() => navigation.navigate('Addpage')}>
           <Text style={styles.txtBtn}>Add new</Text>
         </TouchableOpacity>
       </View>
-      <Modal
-        transparent={true}
-        animationType="fade"
-        visible={isModalVisible}
-        nRequestClose={() => changeModalVisible(false)}>
-        <ModalAdd changeModalVisible={changeModalVisible} setData={null} />
-      </Modal>
     </View>
   );
 };

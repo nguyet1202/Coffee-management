@@ -13,6 +13,7 @@ import useFirestoreCollection from '../hooks/useFirestoreCollection';
 import firestore from '@react-native-firebase/firestore';
 import WarehouseHeader from '../components/WarehouseHeader';
 import ItemCard from '../components/ItemCard';
+
 const Homepage = () => {
   const collection = firestore().collection('products');
   const pageSize = 6;

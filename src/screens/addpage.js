@@ -1,39 +1,33 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  TextInput,
-  Button,
-  Pressable,
-} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import ImagePicker from 'react-native-image-crop-picker';
 import React, {useState} from 'react';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 const HEIGHT_MODAL = 570;
 const WIDTH_MODAL = Dimensions.get('window').width;
-const ModalAdd = props => {
-  const [textcategoryId, onChangetextcategoryId] = useState('');
-  const [textingredients, onChangetextingredients] = useState('');
-  const [textname, onChangetextname] = useState('');
-  const [textprice, onChangetextprice] = useState('');
-  const [Img, setImg] = useState('');
-  const closeModal = (bool, data) => {
-    props.changeModalVisible(bool);
-    // props.setData(null);
-  };
+const Addpage = ({navigation}) => {
+  const [categoryId, setcategoryId] = useState();
+  const [ingredients, setingredients] = useState();
+  const [name, setname] = useState();
+  const [price, setprice] = useState();
+  const [img, setImg] = useState();
   async function addItem() {
     firestore()
       .collection('products')
       .add({
-        categoryId: textcategoryId,
-        ingredients: textingredients,
-        name: textname,
-        price: textprice,
-        img: Img,
+        categoryId: categoryId,
+        ingredients: ingredients,
+        name: name,
+        price: price,
+        img: img,
       })
       .then(() => {
         alert('thành công');
@@ -42,6 +36,7 @@ const ModalAdd = props => {
         alert(error.message);
       });
   }
+
   const choosePic = async () => {
     ImagePicker.openPicker({
       width: 300,
@@ -51,7 +46,6 @@ const ModalAdd = props => {
       const imageName = image.path.substring(image.path.lastIndexOf('/') + 1);
       const bucketFile = `image/${imageName}`;
       const pathToFile = image.path;
-      console.log('link ở đây nèeeee', pathToFile);
       let reference = storage().ref(bucketFile);
       let task = reference.putFile(pathToFile);
       task
@@ -65,57 +59,49 @@ const ModalAdd = props => {
   };
   function ButtonSave() {
     if (
-      textcategoryId.length == 0 ||
-      textingredients.length == 0 ||
-      textname == 0 ||
-      textprice == 0
+      categoryId.length == 0 ||
+      ingredients.length == 0 ||
+      name == 0 ||
+      price == 0
     ) {
       alert('The fields are required');
       return;
     }
     addItem();
   }
-  console.log('hê hê', Img);
   return (
     <TouchableOpacity disabled={true} style={styles.container}>
       <View style={styles.modal}>
         <View style={styles.textView}>
           <Text style={styles.text}>ADD NEW PRODUCT</Text>
-          <TouchableOpacity onPress={() => closeModal(false, 'Cancel')}>
-            <Image
-              style={{width: 40, height: 40, margin: 5}}
-              source={{
-                uri: 'https://cdn-icons-png.flaticon.com/512/458/458594.png',
-              }}
-            />
-          </TouchableOpacity>
         </View>
         <View style={styles.buttonView}>
           <TouchableOpacity style={styles.TouchableOpacity}>
             <TextInput
-              onChangeText={onChangetextname}
-              value={textname}
+              onChangeText={setname}
+              defaultValue={name}
               placeholder="Enter name"
             />
+            {/* <Text>{item.name}</Text> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.TouchableOpacity}>
             <TextInput
-              onChangeText={onChangetextprice}
-              value={textprice}
+              onChangeText={setprice}
+              value={price}
               placeholder="Enter Price"
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.TouchableOpacity}>
             <TextInput
-              onChangeText={onChangetextcategoryId}
-              value={textcategoryId}
+              onChangeText={setcategoryId}
+              value={categoryId}
               placeholder="Enter categoryId"
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.TouchableOpacity}>
             <TextInput
-              onChangeText={onChangetextingredients}
-              value={textingredients}
+              onChangeText={setingredients}
+              value={ingredients}
               placeholder="Enter ingredients"
             />
           </TouchableOpacity>
@@ -128,11 +114,15 @@ const ModalAdd = props => {
               />
               <Image
                 style={{width: 100, height: 100, margin: 5}}
-                source={{uri: Img}}
+                source={{uri: img}}
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.btnAdd} onPress={() => ButtonSave()}>
+          <TouchableOpacity
+            style={styles.btnAdd}
+            onPress={() => {
+              ButtonSave();
+            }}>
             <Text style={styles.txtBtn}>Add new</Text>
           </TouchableOpacity>
         </View>
@@ -141,7 +131,7 @@ const ModalAdd = props => {
   );
 };
 
-export default ModalAdd;
+export default Addpage;
 
 const styles = StyleSheet.create({
   container: {
@@ -172,8 +162,8 @@ const styles = StyleSheet.create({
   textView: {
     width: '95%',
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonView: {
     width: '100%',
