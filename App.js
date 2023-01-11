@@ -1,10 +1,8 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 
+import ScreenNavigate from './src/navigations/ScreenNavigate';
 const App = () => {
-  return <View />;
+  return <ScreenNavigate />;
 };
 
 export default App;
-
-const styles = StyleSheet.create({});
