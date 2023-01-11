@@ -1,6 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -23,6 +23,7 @@ const LoginScreen = ({navigation}) => {
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const resetPassword = () => {
     if (email !== '') {
