@@ -65,25 +65,6 @@ const ProfileScreen = ({navigation}) => {
       }
     } catch (error) {}
   };
-  // const LoadLib = () => {
-  //   launchImageLibrary({}, response => {
-  //     console.log(response);
-  //   }).then(avt => {
-  //     const imageName = avt.path.substring(avt.path.lastIndexOf('/') + 1);
-  //     const bucketFile = `image/${imageName}`;
-  //     const pathToFile = avt.path;
-  //     console.log('link ở đây nèeeee', pathToFile);
-  //     let reference = storage().ref(bucketFile);
-  //     let task = reference.putFile(pathToFile);
-  //     task
-  //       .then(() => {
-  //         console.log('Image uploaded to the bucket!');
-  //         console.log('Image', pathToFile);
-  //         setAvt(pathToFile);
-  //       })
-  //       .catch(e => console.log('uploading image error => ', e));
-  //   });
-  // };
   const Edit = item => {
     setName(item.Name);
     setEmail(item.Email);
@@ -104,7 +85,7 @@ const ProfileScreen = ({navigation}) => {
         avt: avt,
       })
       .then(() => {
-        navigation.navigate('Profile');
+        navigation.navigate('ProfileScreen');
         alert('Update successfully');
       })
       .catch(error => {

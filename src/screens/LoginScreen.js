@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {
@@ -43,10 +42,10 @@ const LoginScreen = ({navigation}) => {
       .then(() => {
         navigation.navigate('Main');
         console.log('loginnnnnn');
-        AsyncStorage.setItem('user', JSON.stringify(user));
       })
       .catch(err => console.log(err.message));
   };
+
   if (initializing) return null;
   if (!user) {
     return (
