@@ -14,7 +14,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+// import {launchImageLibrary} from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import useFirestoreCollection from '../hooks/useFirestoreCollection';
+import storage from '@react-native-firebase/storage';
 
 const ProfileScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,6 +25,7 @@ const ProfileScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
   const [phone, setPhone] = useState('');
+  const [avt, setAvt] = useState('');
   const collection = firestore().collection('users');
   const pageSize = 1;
   const page = 1;
@@ -37,11 +41,55 @@ const ProfileScreen = ({navigation}) => {
   if (error) {
     return error.message;
   }
+  const LoadLib = async () => {
+    try {
+      const imageResult = await ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true,
+      });
+
+      if (imageResult) {
+        const imageName = imageResult.path.substring(
+          imageResult.path.lastIndexOf('/') + 1,
+        );
+        const bucketFile = `image/${imageName}`;
+        const pathToFile = imageResult.path;
+        const reference = storage().ref(bucketFile);
+        const task = await reference.putFile(pathToFile);
+        const url = await storage()
+          .ref(task.metadata.fullPath)
+          .getDownloadURL();
+        console.log(url);
+        setAvt(url);
+      }
+    } catch (error) {}
+  };
+  // const LoadLib = () => {
+  //   launchImageLibrary({}, response => {
+  //     console.log(response);
+  //   }).then(avt => {
+  //     const imageName = avt.path.substring(avt.path.lastIndexOf('/') + 1);
+  //     const bucketFile = `image/${imageName}`;
+  //     const pathToFile = avt.path;
+  //     console.log('link ở đây nèeeee', pathToFile);
+  //     let reference = storage().ref(bucketFile);
+  //     let task = reference.putFile(pathToFile);
+  //     task
+  //       .then(() => {
+  //         console.log('Image uploaded to the bucket!');
+  //         console.log('Image', pathToFile);
+  //         setAvt(pathToFile);
+  //       })
+  //       .catch(e => console.log('uploading image error => ', e));
+  //   });
+  // };
   const Edit = item => {
     setName(item.Name);
     setEmail(item.Email);
     setBirthday(item.birthday);
     setPhone(item.phone);
+    setAvt(item.avt);
     setModalVisible(true);
   };
   const btnSave = item => {
@@ -53,6 +101,7 @@ const ProfileScreen = ({navigation}) => {
         Email: email,
         birthday: birthday,
         phone: phone,
+        avt: avt,
       })
       .then(() => {
         navigation.navigate('Profile');
@@ -125,6 +174,10 @@ const ProfileScreen = ({navigation}) => {
             }}>
             <View style={ModalForm.containModal}>
               <Text style={ModalForm.title}>Make your profile</Text>
+              <Image source={{uri: item.avt}} style={styles.imgUp} />
+              <TouchableOpacity style={styles.btnUp} onPress={LoadLib}>
+                <Text style={styles.textUp}>Choose image</Text>
+              </TouchableOpacity>
               <TextInput
                 defaultValue={item.Name}
                 onChangeText={text => setName(text)}
@@ -208,6 +261,25 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 100,
   },
+  imgUp: {
+    height: 150,
+    width: 150,
+    borderRadius: 360,
+  },
+  btnUp: {
+    height: 30,
+    width: 100,
+    backgroundColor: '#FFBF1C',
+    borderRadius: 15,
+    marginBottom: 10,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textUp: {
+    color: 'white',
+    fontWeight: '500',
+  },
   info: {
     position: 'absolute',
     top: 300,
@@ -269,7 +341,7 @@ const ModalForm = StyleSheet.create({
     fontSize: 24,
     color: '#FFBF1C',
     fontWeight: '500',
-    marginBottom: 50,
+    marginBottom: 30,
   },
   input: {
     borderRadius: 10,
