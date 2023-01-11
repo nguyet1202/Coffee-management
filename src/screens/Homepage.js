@@ -11,18 +11,25 @@ import {
 import React, {useEffect} from 'react';
 import useFirestoreCollection from '../hooks/useFirestoreCollection';
 import firestore from '@react-native-firebase/firestore';
-import WarehouseHeader from '../components/WarehouseHeader';
 import ItemCard from '../components/ItemCard';
+import {useNavigation} from '@react-navigation/native';
+import IntroScreen from './IntroScreen';
 
+const collection = firestore().collection('products');
+const pageSize = 6;
+const page = 2;
 const Homepage = () => {
-  const collection = firestore().collection('products');
-  const pageSize = 6;
-  const page = 2;
-  const {data, loading, error, refresh} = useFirestoreCollection(
-    collection,
-    pageSize,
-    page,
-  );
+  const navigation = useNavigation();
+
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+    searchFilterFunction,
+    search,
+    filteredDataSource,
+  } = useFirestoreCollection(collection, pageSize, page);
   useEffect(() => {
     refresh();
   }, []);
@@ -30,7 +37,34 @@ const Homepage = () => {
   if (error) {
     return <Text>Error: {error.message}</Text>;
   }
-
+  const WarehouseHeader = () => {
+    return (
+      <View style={styles.container_header}>
+        <View style={styles.search}>
+          <TextInput
+            style={styles.searchBar}
+            onChangeText={text => searchFilterFunction(text)}
+            value={search}
+            underlineColorAndroid="transparent"
+            placeholder="Search..."
+          />
+          <TouchableOpacity>
+            <Image
+              style={styles.filter}
+              source={require('../assets/images/filter.png')}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.btnWraper}>
+          <TouchableOpacity
+            style={styles.AddBtn}
+            onPress={() => navigation.navigate('Addpage')}>
+            <Text style={styles.txtBtn}>Add new</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
   const renderEmpty = () => {
     return (
       <View style={styles.emptyContainer}>
@@ -41,7 +75,7 @@ const Homepage = () => {
   return (
     <>
       {loading ? (
-        <ActivityIndicator color="#00ff00" size="large" />
+        <IntroScreen />
       ) : (
         <FlatList
           style={styles.container}
@@ -49,7 +83,7 @@ const Homepage = () => {
           ListEmptyComponent={renderEmpty}
           contentContainerStyle={styles.contentContainer}
           keyExtractor={item => item.id}
-          data={data}
+          data={filteredDataSource || data}
           renderItem={({item}) => {
             return <ItemCard item={item} />;
           }}
@@ -67,6 +101,38 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
   },
+  container_header: {
+    margin: 10,
+  },
+  search: {
+    margin: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  btnWraper: {
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
+  AddBtn: {
+    padding: 10,
+    width: 120,
+    height: 42,
+    borderRadius: 10,
+    backgroundColor: '#A77E52',
+    right: 0,
+  },
+  txtBtn: {
+    color: '#FFBF1C',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  filter: {
+    width: 38,
+    height: 30,
+  },
   searchBar: {
     width: 300,
     height: 42,
@@ -75,10 +141,6 @@ const styles = StyleSheet.create({
     borderColor: '#FFBF1C',
     borderRadius: 10,
     backgroundColor: '#F4F1F1',
-  },
-  contentContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
   },
   emptyMessageStyle: {
     textAlign: 'center',

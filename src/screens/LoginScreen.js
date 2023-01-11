@@ -25,7 +25,6 @@ const LoginScreen = ({navigation}) => {
     return subscriber;
   }, []);
   const resetPassword = () => {
-    console.log(email);
     if (email !== '') {
       auth()
         .sendPasswordResetEmail(email)
@@ -37,9 +36,6 @@ const LoginScreen = ({navigation}) => {
       alert('Please enter a valid email');
     }
   };
-  // auth()
-  //   .signOut()
-  //   .then(() => console.log('User signed out!'));
   const handleLogin = () => {
     auth()
       .signInWithEmailAndPassword(email, password)

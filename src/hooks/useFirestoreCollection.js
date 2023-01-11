@@ -1,6 +1,5 @@
-import {StyleSheet, Text, View} from 'react-native';
 import {useEffect, useState} from 'react';
-import firestore from '@react-native-firebase/firestore';
+import {StyleSheet} from 'react-native';
 function useFirestoreCollection(collection, pageSize, page) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,7 +7,8 @@ function useFirestoreCollection(collection, pageSize, page) {
   const [query, setQuery] = useState(null);
   const [queryLoading, setQueryLoading] = useState(false);
   const [queryError, setQueryError] = useState(null);
-
+  const [search, setSearch] = useState();
+  const [filteredDataSource, setFilteredDataSource] = useState();
   useEffect(() => {
     let unsubscribe;
     if (query) {
@@ -54,7 +54,20 @@ function useFirestoreCollection(collection, pageSize, page) {
     }
     return () => unsubscribe();
   }, [collection, query, pageSize, page]);
-
+  const searchFilterFunction = text => {
+    if (text) {
+      const newData = data.filter(item => {
+        const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      setFilteredDataSource(data);
+      setSearch(text);
+    }
+  };
   function refresh() {
     if (query) {
       setQueryLoading(true);
@@ -112,6 +125,10 @@ function useFirestoreCollection(collection, pageSize, page) {
     queryError,
     refresh,
     setCollectionQuery,
+    setData,
+    searchFilterFunction,
+    search,
+    filteredDataSource,
   };
 }
 

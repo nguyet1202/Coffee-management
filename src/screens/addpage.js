@@ -30,7 +30,8 @@ const Addpage = ({navigation}) => {
         img: img,
       })
       .then(() => {
-        alert('thành công');
+        alert('Successfully');
+        navigation.navigate('Homepage');
       })
       .catch(error => {
         alert(error.message);
@@ -56,7 +57,6 @@ const Addpage = ({navigation}) => {
         const url = await storage()
           .ref(task.metadata.fullPath)
           .getDownloadURL();
-        console.log(url);
         setImg(url);
       }
     } catch (error) {}
@@ -86,7 +86,6 @@ const Addpage = ({navigation}) => {
               defaultValue={name}
               placeholder="Enter name"
             />
-            {/* <Text>{item.name}</Text> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.TouchableOpacity}>
             <TextInput

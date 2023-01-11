@@ -30,7 +30,7 @@ const ItemCard = ({item}) => {
       .doc(item.id)
       .delete()
       .then(() => {
-        alert('Deleted Item Successfully!');
+        alert('Deleted product Successfully!');
       })
       .catch(error => {
         alert(error.message);
@@ -56,7 +56,7 @@ const ItemCard = ({item}) => {
         img: img,
       })
       .then(() => {
-        alert('thành công');
+        alert('Update product successfully');
         setModalVisible(false);
       })
       .catch(error => {
@@ -64,25 +64,27 @@ const ItemCard = ({item}) => {
       });
   }
   const choosePic = async () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      const imageName = image.path.substring(image.path.lastIndexOf('/') + 1);
-      const bucketFile = `image/${imageName}`;
-      const pathToFile = image.path;
-      console.log('link ở đây nèeeee', pathToFile);
-      let reference = storage().ref(bucketFile);
-      let task = reference.putFile(pathToFile);
-      task
-        .then(() => {
-          console.log('Image uploaded to the bucket!');
-          console.log('Image', pathToFile);
-          setImg(pathToFile);
-        })
-        .catch(e => console.log('uploading image error => ', e));
-    });
+    try {
+      const imageResult = await ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true,
+      });
+
+      if (imageResult) {
+        const imageName = imageResult.path.substring(
+          imageResult.path.lastIndexOf('/') + 1,
+        );
+        const bucketFile = `image/${imageName}`;
+        const pathToFile = imageResult.path;
+        const reference = storage().ref(bucketFile);
+        const task = await reference.putFile(pathToFile);
+        const url = await storage()
+          .ref(task.metadata.fullPath)
+          .getDownloadURL();
+        setImg(url);
+      }
+    } catch (error) {}
   };
   function ButtonSave() {
     if (
@@ -156,7 +158,6 @@ const ItemCard = ({item}) => {
                     value={name}
                     placeholder="Enter name"
                   />
-                  {/* <Text>{item.name}</Text> */}
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.TouchableOpacity}>
                   <TextInput
@@ -197,7 +198,7 @@ const ItemCard = ({item}) => {
                   onPress={() => {
                     ButtonSave();
                   }}>
-                  <Text style={styles.txtBtn}>Add new</Text>
+                  <Text style={styles.txtBtn}>SAVE</Text>
                 </TouchableOpacity>
               </View>
             </View>
