@@ -1,12 +1,8 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import RevenueScreen from './src/screens/RevenueScreen';
-// import IntroScreen from './src/screens/IntroScreen';
-// import AddnewModal from './src/components/AddnewModal';
-// import WarehouseScreen from './src/screens/WarehouseScreen';
-import StatisticManagement from './src/screens/StatisticScreen';
+import {StyleSheet, View} from 'react-native';
+
 const App = () => {
-  return <RevenueScreen />;
+  return <View />;
 };
 
 export default App;
