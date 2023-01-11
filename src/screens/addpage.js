@@ -38,31 +38,35 @@ const Addpage = ({navigation}) => {
   }
 
   const choosePic = async () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      const imageName = image.path.substring(image.path.lastIndexOf('/') + 1);
-      const bucketFile = `image/${imageName}`;
-      const pathToFile = image.path;
-      let reference = storage().ref(bucketFile);
-      let task = reference.putFile(pathToFile);
-      task
-        .then(() => {
-          console.log('Image uploaded to the bucket!');
-          console.log('Image', pathToFile);
-          setImg(pathToFile);
-        })
-        .catch(e => console.log('uploading image error => ', e));
-    });
+    try {
+      const imageResult = await ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true,
+      });
+
+      if (imageResult) {
+        const imageName = imageResult.path.substring(
+          imageResult.path.lastIndexOf('/') + 1,
+        );
+        const bucketFile = `image/${imageName}`;
+        const pathToFile = imageResult.path;
+        const reference = storage().ref(bucketFile);
+        const task = await reference.putFile(pathToFile);
+        const url = await storage()
+          .ref(task.metadata.fullPath)
+          .getDownloadURL();
+        console.log(url);
+        setImg(url);
+      }
+    } catch (error) {}
   };
   function ButtonSave() {
     if (
-      categoryId.length == 0 ||
-      ingredients.length == 0 ||
-      name == 0 ||
-      price == 0
+      categoryId.length === 0 ||
+      ingredients.length === 0 ||
+      name === 0 ||
+      price === 0
     ) {
       alert('The fields are required');
       return;
