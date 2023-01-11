@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
   btnWraper: {
     display: 'flex',
     alignItems: 'flex-end',
-    //justifyContent: 'flex-end',
   },
   AddBtn: {
     padding: 10,

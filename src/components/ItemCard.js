@@ -139,7 +139,7 @@ const ItemCard = ({item}) => {
           <TouchableOpacity disabled={true} style={styles.container}>
             <View style={styles.modal}>
               <View style={styles.textView}>
-                <Text style={styles.text}>ADD NEW PRODUCT</Text>
+                <Text style={styles.text}>UPDATE PRODUCT</Text>
                 <TouchableOpacity onPress={() => setModalVisible(false)}>
                   <Image
                     style={{width: 40, height: 40, margin: 5}}
