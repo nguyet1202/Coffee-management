@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import React, {useEffect, useState} from 'react';
 import {
@@ -21,11 +22,9 @@ const LoginScreen = ({navigation}) => {
   }
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return subscriber;
   }, []);
   const resetPassword = () => {
-    console.log(email);
     if (email !== '') {
       auth()
         .sendPasswordResetEmail(email)
@@ -41,8 +40,9 @@ const LoginScreen = ({navigation}) => {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        navigation.navigate('Profile');
+        navigation.navigate('Main');
         console.log('loginnnnnn');
+        AsyncStorage.setItem('user', JSON.stringify(user));
       })
       .catch(err => console.log(err.message));
   };
@@ -81,11 +81,6 @@ const LoginScreen = ({navigation}) => {
       </KeyboardAvoidingView>
     );
   }
-  return (
-    <View>
-      <Text>Welcome {user.email}</Text>
-    </View>
-  );
 };
 
 export default LoginScreen;
