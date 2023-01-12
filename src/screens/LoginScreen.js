@@ -38,13 +38,17 @@ const LoginScreen = ({navigation}) => {
     }
   };
   const handleLogin = () => {
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        navigation.navigate('Main');
-        console.log('loginnnnnn');
-      })
-      .catch(err => console.log(err.message));
+    if (!!email && !!password) {
+      auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          navigation.navigate('Main');
+          console.log('loginnnnnn');
+        })
+        .catch(err => console.log(err.message));
+    } else {
+      alert('Please enter your email and password to sign in');
+    }
   };
 
   if (initializing) return null;
