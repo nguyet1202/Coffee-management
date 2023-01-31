@@ -1,12 +1,8 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 
+import ScreenNavigate from './src/navigations/ScreenNavigate';
 const App = () => {
-  return (
-    <View>
-      <Text>App</Text>
-    </View>
-  );
+  return <ScreenNavigate />;
 };
 
 export default App;
